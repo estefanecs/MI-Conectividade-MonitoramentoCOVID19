@@ -210,7 +210,8 @@ public class FilaPaciente {
     }
     
     /**
-     * Método que lista todos os 7 pacientes mais graves
+     * Método que lista todos os 7 pacientes mais graves.
+     * Só são considerados pacientes graves, com gravidade >=3
      *
      * @return ArrayList- lista contendo os pacientes mais graves
      */
@@ -219,9 +220,11 @@ public class FilaPaciente {
         ArrayList<String> lista = new ArrayList<>();
         int count =0;
         while (count < 7 && auxiliar!=null) {
-            String gravidade = " |Gravidade: "+ auxiliar.getConteudo().getGravidade();
-            String dado = auxiliar.getConteudo().getNome().concat(gravidade);
-            lista.add(dado);
+            if(auxiliar.getConteudo().getGravidade()>=3){
+                String gravidade = " |Gravidade: "+ auxiliar.getConteudo().getGravidade();
+                String dado = auxiliar.getConteudo().getNome().concat(gravidade);
+                lista.add(dado);
+            }
             auxiliar = auxiliar.getNext();
             count++;
         }

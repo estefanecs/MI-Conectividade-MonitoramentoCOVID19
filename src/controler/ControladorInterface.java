@@ -57,7 +57,7 @@ public class ControladorInterface {
     }
     
     public void cadastrarPaciente(String nome, String cpf){
-        System.out.println("NOME "+nome+"CPF "+cpf);
+        System.out.println("NOME "+nome+" CPF "+cpf);
         Paciente paciente = new Paciente(nome, cpf);
         pacientes.add(paciente);
         System.out.println("LISTA DE PACIENTE size: "+pacientes.size());

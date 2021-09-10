@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Paciente;
 import org.json.JSONException;
 
 /**
@@ -31,6 +32,48 @@ public class TelaInicial extends javax.swing.JFrame {
         initComponents();
         controlador = ControladorInterface.getInstancia();
         comunicador = Comunicador.getInstancia();
+        
+        
+        /*CRIAR PACIENTES */
+        Paciente p1= new Paciente("Marta","098.000.999-11");
+        
+        Paciente p2= new Paciente("Joana","091.000.999-11");
+        
+        Paciente p3= new Paciente("Joao","098.000.999-11");
+        
+        Paciente p4= new Paciente("Carlos","098.000.999-11");
+        
+        p1.setFreqCardiaca(112);
+        p1.setFreqRespiratoria(22);
+        p1.setPressao(79);
+        p1.setSatOxigenio(77);
+        p1.setTemperatura(38.6);
+      
+  
+        p2.setFreqCardiaca(110);
+        p2.setFreqRespiratoria(20);
+        p2.setPressao(81);
+        p2.setSatOxigenio(88);
+        p2.setTemperatura(38.5);
+        
+         p3.setFreqCardiaca(112);
+        p3.setFreqRespiratoria(22);
+        p3.setPressao(79);
+        p3.setSatOxigenio(77);
+        p3.setTemperatura(36);
+ 
+        p4.setFreqCardiaca(110);
+        p4.setFreqRespiratoria(20);
+        p4.setPressao(81);
+        p4.setSatOxigenio(88);
+        p4.setTemperatura(38.6);
+         //adicionar pacientes na lista
+         controlador.getPacientes().add(p1);
+         controlador.getPacientes().add(p2);
+         controlador.getPacientes().add(p3);
+         controlador.getPacientes().add(p4);
+        
+        
         //Adiciona todos os paciente cadastrados no comboBoxPacientes
         ArrayList<String> pacientes = controlador.addPacientesComboBox();
         for (int i = 0; i <pacientes.size(); i++) {
@@ -39,10 +82,37 @@ public class TelaInicial extends javax.swing.JFrame {
         
         
        ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
-      /* for (int j =0; j<pacientesGraves.size(); j++){
-          PacientesGraves.(pacientesGraves.get(j));
-       }*/
-        
+       paciente1.setText(null);
+       paciente2.setText(null);
+       paciente3.setText(null);
+       paciente4.setText(null);
+       paciente5.setText(null);
+       paciente6.setText(null);
+       paciente7.setText(null);
+       if(!pacientesGraves.isEmpty()){
+          paciente1.setText(pacientesGraves.get(0));
+          if(pacientesGraves.size()>=2){
+          paciente2.setText(pacientesGraves.get(1));
+          }
+          if(pacientesGraves.size()>=3){
+            paciente3.setText(pacientesGraves.get(2));
+          }
+          if(pacientesGraves.size()>=4){
+            paciente4.setText(pacientesGraves.get(3));
+          }
+          if(pacientesGraves.size()>=5){
+            paciente5.setText(pacientesGraves.get(4));
+          }
+          if(pacientesGraves.size()>=6){
+            paciente6.setText(pacientesGraves.get(5));
+          }
+          if(pacientesGraves.size()>=7){
+            paciente7.setText(pacientesGraves.get(6));
+          }
+       }
+        else{
+            paciente3.setText("Não há pacientes em estado grave");
+        }
     }
 
     /**
@@ -54,16 +124,32 @@ public class TelaInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        PacientesGraves = new javax.swing.JList<>();
         listaPacientes = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         cadastrar = new javax.swing.JButton();
         remover = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        paciente1 = new javax.swing.JLabel();
+        paciente2 = new javax.swing.JLabel();
+        paciente3 = new javax.swing.JLabel();
+        paciente4 = new javax.swing.JLabel();
+        paciente5 = new javax.swing.JLabel();
+        paciente7 = new javax.swing.JLabel();
+        paciente6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,16 +157,6 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel1.setText("SISTEMA DE MONITORAMENTO DE COVID-19");
-
-        PacientesGraves.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        PacientesGraves.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        PacientesGraves.setForeground(new java.awt.Color(102, 0, 0));
-        PacientesGraves.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(PacientesGraves);
 
         listaPacientes.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         listaPacientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nomeatualteste" }));
@@ -104,6 +180,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel3.setText("SELECIONAR PACIENTE PARA MONITORAR:");
 
+        cadastrar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         cadastrar.setText("Aceitar Cadastros");
         cadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,12 +188,91 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
+        remover.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         remover.setText("Aceitar Remoções");
         remover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removerActionPerformed(evt);
             }
         });
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        paciente1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        paciente1.setForeground(new java.awt.Color(153, 0, 0));
+        paciente1.setText("PACIENTES MAIS GRAVES");
+
+        paciente2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        paciente2.setForeground(new java.awt.Color(153, 0, 0));
+        paciente2.setText("PACIENTES MAIS GRAVES");
+
+        paciente3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        paciente3.setForeground(new java.awt.Color(153, 0, 0));
+        paciente3.setText("PACIENTES MAIS GRAVES");
+
+        paciente4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        paciente4.setForeground(new java.awt.Color(153, 0, 0));
+        paciente4.setText("PACIENTES MAIS GRAVES");
+
+        paciente5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        paciente5.setForeground(new java.awt.Color(153, 0, 0));
+        paciente5.setText("PACIENTES MAIS GRAVES");
+
+        paciente7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        paciente7.setForeground(new java.awt.Color(153, 0, 0));
+        paciente7.setText("PACIENTES MAIS GRAVES");
+
+        paciente6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        paciente6.setForeground(new java.awt.Color(153, 0, 0));
+        paciente6.setText("PACIENTES MAIS GRAVES");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(paciente1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paciente7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paciente6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paciente5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paciente4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paciente3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(paciente2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(paciente1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paciente2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paciente3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paciente4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paciente5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paciente6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(paciente7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        paciente1.getAccessibleContext().setAccessibleName("..");
+        paciente2.getAccessibleContext().setAccessibleName("..");
+        paciente3.getAccessibleContext().setAccessibleName("..");
+        paciente4.getAccessibleContext().setAccessibleName("..");
+        paciente5.getAccessibleContext().setAccessibleName("..");
+        paciente7.getAccessibleContext().setAccessibleName("..");
+        paciente6.getAccessibleContext().setAccessibleName("..");
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel4.setText("ACEITAR SOLICITAÇÕES DE CADASTRO E REMOÇÃO:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,18 +285,20 @@ public class TelaInicial extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 39, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(listaPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(remover, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(42, 42, 42))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(listaPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(27, 27, 27)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(72, 72, 72)
+                            .addComponent(remover, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(62, 62, 62))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,19 +307,21 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(jLabel2)
+                .addGap(27, 27, 27)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(listaPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrar)
                     .addComponent(remover))
-                .addGap(25, 25, 25))
+                .addGap(21, 21, 21))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -200,12 +360,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 for (int i = 0; i <pacientes.size(); i++) {
                     listaPacientes.addItem(pacientes.get(i));
                 }
-
-                //Atualiza a lista de pacientes mais graves
-                PacientesGraves.removeAll();
             }
-            
-            
         } catch (IOException ex) {
             Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
@@ -229,7 +384,38 @@ public class TelaInicial extends javax.swing.JFrame {
                 } 
 
                 //Atualiza a lista de pacientes mais graves
-                PacientesGraves.removeAll();
+                ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
+                paciente1.setText(null);
+                paciente2.setText(null);
+                paciente3.setText(null);
+                paciente4.setText(null);
+                paciente5.setText(null);
+                paciente6.setText(null);
+                paciente7.setText(null);
+                if(!pacientesGraves.isEmpty()){
+                   paciente1.setText(pacientesGraves.get(0));
+                   if(pacientesGraves.size()>=2){
+                   paciente2.setText(pacientesGraves.get(1));
+                   }
+                   if(pacientesGraves.size()>=3){
+                     paciente3.setText(pacientesGraves.get(2));
+                   }
+                   if(pacientesGraves.size()>=4){
+                     paciente4.setText(pacientesGraves.get(3));
+                   }
+                   if(pacientesGraves.size()>=5){
+                     paciente5.setText(pacientesGraves.get(4));
+                   }
+                   if(pacientesGraves.size()>=6){
+                     paciente6.setText(pacientesGraves.get(5));
+                   }
+                   if(pacientesGraves.size()>=7){
+                     paciente7.setText(pacientesGraves.get(6));
+                   }
+                }
+                else{
+                    paciente3.setText("Não há pacientes em estado grave");
+                }
             }
             
         } catch (IOException ex) {
@@ -277,15 +463,24 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> PacientesGraves;
     private javax.swing.JButton cadastrar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> listaPacientes;
+    private javax.swing.JLabel paciente1;
+    private javax.swing.JLabel paciente2;
+    private javax.swing.JLabel paciente3;
+    private javax.swing.JLabel paciente4;
+    private javax.swing.JLabel paciente5;
+    private javax.swing.JLabel paciente6;
+    private javax.swing.JLabel paciente7;
     private javax.swing.JButton remover;
     // End of variables declaration//GEN-END:variables
 }
