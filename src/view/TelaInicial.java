@@ -40,7 +40,7 @@ public class TelaInicial extends javax.swing.JFrame {
         
        ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
       /* for (int j =0; j<pacientesGraves.size(); j++){
-          PacientesGraves.setModel(pacientesGraves.get(j));
+          PacientesGraves.(pacientesGraves.get(j));
        }*/
         
     }
@@ -192,7 +192,20 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
         try {
-            comunicador.getDados("GET/cadastrarPaciente");
+            String retorno=comunicador.getDados("GET/cadastrarPaciente");
+            //Atualiza o combo Box para as novas opções de pacientes
+            if(!retorno.equals("nula")){
+                listaPacientes.removeAllItems();
+                ArrayList<String> pacientes = controlador.addPacientesComboBox();
+                for (int i = 0; i <pacientes.size(); i++) {
+                    listaPacientes.addItem(pacientes.get(i));
+                }
+
+                //Atualiza a lista de pacientes mais graves
+                PacientesGraves.removeAll();
+            }
+            
+            
         } catch (IOException ex) {
             Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
@@ -205,7 +218,27 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastrarActionPerformed
 
     private void removerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerActionPerformed
-        // TODO add your handling code here:
+        try {
+            String retorno = comunicador.getDados("GET/removerPaciente");
+            if(!retorno.equals("nula")){
+                //Atualiza o combo Box para as novas opções de pacientes
+                listaPacientes.removeAllItems();
+                ArrayList<String> pacientes = controlador.addPacientesComboBox();
+                for (int i = 0; i <pacientes.size(); i++) {
+                    listaPacientes.addItem(pacientes.get(i));
+                } 
+
+                //Atualiza a lista de pacientes mais graves
+                PacientesGraves.removeAll();
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_removerActionPerformed
 
     /**

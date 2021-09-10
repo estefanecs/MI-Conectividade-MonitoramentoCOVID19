@@ -10,9 +10,10 @@ import org.json.JSONException;
  * @author casa
  */
 public class NewClass {
-    public static void main(String[] args) throws IOException, JSONException, ClassNotFoundException {
+  /* public static void main(String[] args) throws IOException, JSONException, ClassNotFoundException {
         
-        Cliente comunicador = Cliente.getInstancia();
+        Comunicador comunicador = Comunicador.getInstancia();
+       
         comunicador.getDados("GET/cadastrarPaciente");
-    }
+    }*/
 }
