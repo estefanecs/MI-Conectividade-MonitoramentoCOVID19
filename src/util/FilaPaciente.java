@@ -185,6 +185,7 @@ public class FilaPaciente {
             No auxiliar2 = first;
             while(auxiliar2.getNext()!=null){
                 if(auxiliar2.getConteudo().getNome().equals(nome)){
+                    System.out.println("Auxiliar "+auxiliar2.getConteudo().getNome()+"nome "+nome);
                     return auxiliar2.getConteudo();
                 }
                 auxiliar = auxiliar2;

@@ -4,21 +4,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/view/TelaInicial.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/test/ControladorCorrida.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/model/Servidor.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/view/MonitoramentoPaciente.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/util/FilaPaciente.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/model/MIProblema1.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/controler/Comunicador.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/controler/Cliente.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/model/ArmazenamentoDados.java</file>
             <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/test/Servidor.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/controler/NewClass.java</file>
             <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/model/Paciente.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/controler/Servidor.java</file>
-            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/util/No.java</file>
+            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/view/MonitoramentoPaciente.java</file>
             <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/controler/ControladorInterface.java</file>
+            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/util/FilaPaciente.java</file>
             <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/test/ControladorComunicacao.java</file>
+            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/controler/Comunicador.java</file>
+            <file>file:/C:/Users/casa/Documents/NetBeansProjects/MI-problema1/src/model/ArmazenamentoDados.java</file>
         </group>
     </open-files>
 </project-private>

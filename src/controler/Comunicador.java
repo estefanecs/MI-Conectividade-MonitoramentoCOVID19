@@ -1,7 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Componente Curricular: Módulo Integrado de Concorrência e Conectividade
+ * Autor: Estéfane Carmo de Souza
+ * Data: /09/2021
+ *
+ * Declaro que este código foi elaborado por mim de forma individual e
+ * não contém nenhum trecho de código de outro colega ou de outro autor,
+ * tais como provindos de livros e apostilas, e páginas ou documentos
+ * eletrônicos da Internet. Qualquer trecho de código de outra autoria que
+ * uma citação para o  não a minha está destacado com  autor e a fonte do
+ * código, e estou ciente que estes trechos não serão considerados para fins
+ * de avaliação. Alguns trechos do código podem coincidir com de outros
+ * colegas pois estes foram discutidos em sessões tutorias.
  */
 package controler;
 
@@ -68,7 +77,7 @@ public class Comunicador implements Runnable {
         cliente= new Socket(this.ip,this.porta);
         escritor= new ObjectOutputStream((cliente.getOutputStream()));
         leitor= new ObjectInputStream((cliente.getInputStream()));
-        System.out.println("C- aconteceu a conexão");
+        System.out.println("\n\n****************C- aconteceu a conexão******************");
         Thread t = new Thread(this);
     }
      public void encerrarConexao() throws IOException{
@@ -140,7 +149,10 @@ public class Comunicador implements Runnable {
         escritor.flush();
         System.out.println("C- Enviou dados");
         //Recebe o dado enviado pelo servidor.
-        String dados = leitor.readUTF();
+        String dados = null;
+        while(dados==null){
+            dados=leitor.readUTF();
+        }        
         System.out.println("c- recebi os dados: "+dados);
         if(!dados.equals("nula")){
           this.analisaDados(dados); 
@@ -154,30 +166,6 @@ public class Comunicador implements Runnable {
         return dados;
      }
      
-  /*  public static void main(String[] args) {
-        try {
-            Comunicador cliente= new Comunicador();
-            cliente.estabelecerConexao();
-            System.out.println("Comunicador conectado: " + cliente.cliente.getInetAddress().getHostAddress());
-            cliente.escritor.writeUTF("GET/cadastrarPaciente");
-            cliente.escritor.flush();
-            System.out.println("C- Enviou dados");
-            //Recebe o dado enviado pelo servidor.
-            String dados= cliente.leitor.readUTF();
-            System.out.println("c- recebi os dados: "+dados);
-            cliente.analisaDados(dados);
-            
-            cliente.escritor.close();
-            cliente.leitor.close();
-            cliente.encerrarConexao();
-       
-        }
-        catch(Exception e) {
-          System.out.println("Erro: " + e.getMessage());
-        }
-
-    }*/
-
     @Override
     public void run() {
         String dadosRecebidos = null;

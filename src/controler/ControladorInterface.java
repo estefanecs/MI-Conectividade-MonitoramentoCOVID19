@@ -61,8 +61,6 @@ public class ControladorInterface {
         Paciente paciente = new Paciente(nome, cpf);
         pacientes.add(paciente);
         System.out.println("LISTA DE PACIENTE size: "+pacientes.size());
-        
-        
     }
     
     public Paciente removerPaciente(String nome){
@@ -95,7 +93,7 @@ public class ControladorInterface {
     }
     
     /**
-     * Método que buscxa um paciente apartir do nome
+     * Método que busca um paciente apartir do nome
      * @param nome - nome do paciente
      * @return Paciente - paciente encontrado
      */
@@ -105,11 +103,13 @@ public class ControladorInterface {
     
     public void atualizarDados(String nome,double temperatura,float freqCardiaca,float freqRespiratoria,float pressao, float saturacao){
         Paciente paciente = pacientes.remove(nome);
+        System.out.println("LISTA DE PACIENTE TAMANHO: "+pacientes.size());
         paciente.setTemperatura(temperatura);
         paciente.setFreqCardiaca(freqCardiaca);
         paciente.setFreqRespiratoria(freqRespiratoria);
         paciente.setPressao(pressao);
         paciente.setSatOxigenio(saturacao);
         pacientes.add(paciente);
+        System.out.println("LISTA DE PACIENTE TAMANHO: "+pacientes.size());
     }
 }
