@@ -11,6 +11,8 @@ import controler.Comunicador;
 import controler.ControladorInterface;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Paciente;
@@ -20,7 +22,7 @@ import org.json.JSONException;
  *
  * @author casa
  */
-public class TelaInicial extends javax.swing.JFrame {
+public class TelaInicial extends javax.swing.JFrame implements Runnable{
 
     private ControladorInterface controlador;
     private Comunicador comunicador;
@@ -32,7 +34,8 @@ public class TelaInicial extends javax.swing.JFrame {
         initComponents();
         controlador = ControladorInterface.getInstancia();
         comunicador = Comunicador.getInstancia();
-        
+        Thread t = new Thread(this);
+        t.start();
         
         /*CRIAR PACIENTES */
         Paciente p1= new Paciente("Marta","098.000.999-11");
@@ -80,8 +83,12 @@ public class TelaInicial extends javax.swing.JFrame {
             listaPacientes.addItem(pacientes.get(i));
         }
         
-        
-       ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
+        //Atuaiza a lista de pacientes graves
+        this.atualizarPacientesGraves();
+       
+    }
+    public void atualizarPacientesGraves(){
+        ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
        paciente1.setText(null);
        paciente2.setText(null);
        paciente3.setText(null);
@@ -114,7 +121,6 @@ public class TelaInicial extends javax.swing.JFrame {
             paciente3.setText("Não há pacientes em estado grave");
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,8 +160,10 @@ public class TelaInicial extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(675, 500));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("SISTEMA DE MONITORAMENTO DE COVID-19");
 
         listaPacientes.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -278,43 +286,41 @@ public class TelaInicial extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(64, 64, 64)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(listaPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(listaPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(72, 72, 72)
-                                .addComponent(remover, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(59, Short.MAX_VALUE))
+                        .addComponent(cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(72, 72, 72)
+                        .addComponent(remover, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(49, 49, 49)
                 .addComponent(jLabel2)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(listaPacientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -331,9 +337,7 @@ public class TelaInicial extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -349,40 +353,8 @@ public class TelaInicial extends javax.swing.JFrame {
                 for (int i = 0; i <pacientes.size(); i++) {
                     listaPacientes.addItem(pacientes.get(i));
                 }
-
-                //Atualiza a lista de pacientes mais graves
-                ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
-                paciente1.setText(null);
-                paciente2.setText(null);
-                paciente3.setText(null);
-                paciente4.setText(null);
-                paciente5.setText(null);
-                paciente6.setText(null);
-                paciente7.setText(null);
-                if(!pacientesGraves.isEmpty()){
-                    paciente1.setText(pacientesGraves.get(0));
-                    if(pacientesGraves.size()>=2){
-                        paciente2.setText(pacientesGraves.get(1));
-                    }
-                    if(pacientesGraves.size()>=3){
-                        paciente3.setText(pacientesGraves.get(2));
-                    }
-                    if(pacientesGraves.size()>=4){
-                        paciente4.setText(pacientesGraves.get(3));
-                    }
-                    if(pacientesGraves.size()>=5){
-                        paciente5.setText(pacientesGraves.get(4));
-                    }
-                    if(pacientesGraves.size()>=6){
-                        paciente6.setText(pacientesGraves.get(5));
-                    }
-                    if(pacientesGraves.size()>=7){
-                        paciente7.setText(pacientesGraves.get(6));
-                    }
-                }
-                else{
-                    paciente3.setText("Não há pacientes em estado grave");
-                }
+                this.atualizarPacientesGraves();
+                
             }
 
         } catch (IOException ex) {
@@ -456,6 +428,7 @@ public class TelaInicial extends javax.swing.JFrame {
        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TelaInicial().setVisible(true);
+                
             }
         });
     }
@@ -481,4 +454,18 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JLabel paciente7;
     private javax.swing.JButton remover;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        int delay = 7000;   // delay de 7 seg.
+        int interval =3000;  // intervalo de 3 seg.
+        Timer timer = new Timer();
+   
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+               atualizarPacientesGraves();
+           }
+       }, delay, interval);
+    }
 }
