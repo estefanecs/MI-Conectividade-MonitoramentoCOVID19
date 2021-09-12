@@ -15,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Paciente;
 import org.json.JSONException;
 
@@ -30,14 +31,13 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
     /**
      * Creates new form TelaInicial
      */
-    public TelaInicial() {
+    public TelaInicial() throws IOException {
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = ControladorInterface.getInstancia();
         comunicador = Comunicador.getInstancia();
         Thread t = new Thread(this);
         t.start();
-        
         /*CRIAR PACIENTES */
         Paciente p1= new Paciente("Marta","098.000.999-11");
         
@@ -76,20 +76,23 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
          controlador.getPacientes().add(p2);
          controlador.getPacientes().add(p3);
          controlador.getPacientes().add(p4);
-        
+       
+         
+        controlador.importarPacientes();
         
         //Adiciona todos os paciente cadastrados no comboBoxPacientes
-        ArrayList<String> pacientes = controlador.addPacientesComboBox();
+       ArrayList<String> pacientes = controlador.addPacientesComboBox();
         for (int i = 0; i <pacientes.size(); i++) {
             listaPacientes.addItem(pacientes.get(i));
         }
         
         //Atuaiza a lista de pacientes graves
         this.atualizarPacientesGraves();
-       
+        
+        
     }
     public void atualizarPacientesGraves(){
-        ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
+       ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
        paciente1.setText(null);
        paciente2.setText(null);
        paciente3.setText(null);
@@ -355,6 +358,7 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
                     listaPacientes.addItem(pacientes.get(i));
                 }
                 this.atualizarPacientesGraves();
+              //  JOptionPane.showMessageDialog(null, "O paciente foi removido");
                 
             }
 
@@ -428,7 +432,11 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
         /* Create and display the form */
        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaInicial().setVisible(true);
+                try {
+                    new TelaInicial().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
             }
         });

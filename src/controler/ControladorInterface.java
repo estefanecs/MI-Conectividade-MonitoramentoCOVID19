@@ -14,7 +14,9 @@
  */
 package controler;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import model.ArmazenamentoDados;
 import model.Paciente;
 import util.FilaPaciente;
 
@@ -22,9 +24,11 @@ public class ControladorInterface {
     
     private static ControladorInterface instancia;
     private FilaPaciente pacientes;
+    private ArmazenamentoDados armazenamento;
 
     public ControladorInterface(){
         pacientes = new FilaPaciente();
+        armazenamento= new ArmazenamentoDados();
     }
  
      /**
@@ -60,16 +64,37 @@ public class ControladorInterface {
         System.out.println("NOME "+nome+" CPF "+cpf);
         Paciente paciente = new Paciente(nome, cpf);
         pacientes.add(paciente);
+        String dado= nome.concat(":"+cpf);
+        dado= dado.replace ("\n", "");
+        System.out.println("dado para adiocionar no arquivo "+dado+"ALOOO");
+        armazenamento.write("pacientes.txt",dado);
         System.out.println("LISTA DE PACIENTE size: "+pacientes.size());
     }
     
     public Paciente removerPaciente(String nome){
         if(!pacientes.isEmpty()){
-            return pacientes.remove(nome);
+            Paciente paciente = pacientes.remove(nome);
+                if(paciente!=null){
+                    armazenamento.write("pacientes.txt",pacientes);
+                    return paciente;
+                }
         }
-        else{
-            return null;
+        return null;
+    }
+    
+    public void importarPacientes() throws IOException{
+        ArrayList<String> leitura= armazenamento.read("pacientes.txt");
+        System.out.println("size de leitura "+leitura.size());
+        String[] dados;
+        int count=0;
+        while(!leitura.isEmpty() && count<leitura.size()){
+            dados = leitura.get(count).split(":");
+            System.out.println("dados "+dados[0]+"/ "+dados[1]);
+            Paciente paciente= new Paciente(dados[0],dados[1]);
+            pacientes.add(paciente);    
+            count++;
         }
+        System.out.println("PACIENTES LISTA "+pacientes.size());
     }
     
     /**

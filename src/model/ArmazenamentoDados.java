@@ -16,48 +16,76 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import util.FilaPaciente;
 
 
 public class ArmazenamentoDados {
     
     
-    public String read(String nomeArquivo) throws IOException{
+    public ArrayList<String> read(String nomeArquivo) throws IOException{
         BufferedReader ler = null;
-        String leitura="";
-        if(!this.isEmpty(nomeArquivo)){
-            try{
-                ler = new BufferedReader(new FileReader("Dados/"+nomeArquivo));
-                String linha = ler.readLine();
-                while(linha!=null){
-                    leitura+=linha+"\n";
-                    linha= ler.readLine();
-                }       
-            }catch (FileNotFoundException exception) {
-                leitura= "Arquivo não encontrado";
-                throw new IOException();
-            } finally {
-                if (ler != null) {
-                    ler.close(); //fecha o arquivo
-                }
-            }
+        ArrayList<String> leitura = new ArrayList();
+        try{
+            int i=0;
+            ler = new BufferedReader(new FileReader("Dados/"+nomeArquivo));
+            String linha = ler.readLine();
+            System.out.println("linha = "+linha);
+            while(linha!=null){
+               System.out.println(i+" linha = "+linha);
+                leitura.add(linha);
+                i++;
+                linha= ler.readLine();
+            }  
+            ler.close();
+        }catch (FileNotFoundException exception) {
+            throw new IOException();
         }
         return leitura;
     }
-        
-    public String write(String nomeArquivo, String informacao){
+
+    public void write(String nomeArquivo, String informacao){
         BufferedWriter escrever = null;
         try{
-            escrever= new BufferedWriter (new FileWriter("Dados/"+nomeArquivo));
-            escrever.write(informacao);
+            escrever= new BufferedWriter (new FileWriter("Dados/"+nomeArquivo,true));
+            if(!this.isEmpty(nomeArquivo)){
+                escrever.newLine();
+            }
+            escrever.append(informacao);
             escrever.close();
-            return "Escrita efetivada";
-        }catch(IOException e){
-            return e.getMessage();
+        } catch (IOException ex) {
+            Logger.getLogger(ArmazenamentoDados.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
+    
+    public void write(String nomeArquivo,FilaPaciente pacientes){
+        BufferedWriter escrever = null;
+        try{
+            escrever= new BufferedWriter (new FileWriter("Dados/"+nomeArquivo,false));
+            int count=0;
+            if(!pacientes.isEmpty()){
+                Paciente paciente = pacientes.get(0);
+                escrever.append(paciente.getNome()+":"+paciente.getCpf());
+            }
+            count=1;
+            while(count<pacientes.size()){
+                escrever.newLine();
+                Paciente paciente = pacientes.get(count);
+                escrever.append(paciente.getNome()+":"+paciente.getCpf());
+                count++;
+                System.out.println("count = "+count+ "size = "+pacientes.size());
+            }
+            escrever.close();
+        }catch (IOException ex) {
+            Logger.getLogger(ArmazenamentoDados.class.getName()).log(Level.SEVERE, null, ex);
         }    
     }
     public boolean isEmpty(String nomeArquivo) throws IOException{
@@ -68,5 +96,5 @@ public class ArmazenamentoDados {
            throw new IOException();
         }
     }
-
+    
 }
