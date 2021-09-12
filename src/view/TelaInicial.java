@@ -32,6 +32,7 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
      */
     public TelaInicial() {
         initComponents();
+        this.setLocationRelativeTo(null);
         controlador = ControladorInterface.getInstancia();
         comunicador = Comunicador.getInstancia();
         Thread t = new Thread(this);
