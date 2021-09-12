@@ -29,6 +29,7 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
      */
     public MonitoramentoPaciente(String nome) {
         initComponents();
+        this.setLocationRelativeTo(null);
         controlador = ControladorInterface.getInstancia();
         this.pacienteMonitorado = nome;
         Paciente paciente = controlador.buscarPaciente(nome);
