@@ -1,7 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Componente Curricular: Módulo Integrado de Concorrência e Conectividade
+ * Autor: Estéfane Carmo de Souza
+ * Data: 13/09/2021
+ *
+ * Declaro que este código foi elaborado por mim de forma individual e
+ * não contém nenhum trecho de código de outro colega ou de outro autor,
+ * tais como provindos de livros e apostilas, e páginas ou documentos
+ * eletrônicos da Internet. Qualquer trecho de código de outra autoria que
+ * uma citação para o  não a minha está destacado com  autor e a fonte do
+ * código, e estou ciente que estes trechos não serão considerados para fins
+ * de avaliação. Alguns trechos do código podem coincidir com de outros
+ * colegas pois estes foram discutidos em sessões tutorias.
  */
 package view;
 
@@ -15,10 +24,6 @@ import java.util.logging.Logger;
 import model.Paciente;
 import org.json.JSONException;
 
-/**
- *
- * @author casa
- */
 public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnable{
     
     private ControladorInterface controlador;
@@ -30,9 +35,11 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
     public MonitoramentoPaciente(String nome) {
         initComponents();
         this.setLocationRelativeTo(null);
-        controlador = ControladorInterface.getInstancia();
-        this.pacienteMonitorado = nome;
+        controlador = ControladorInterface.getInstancia(); //Obtem a instancia do controlador
+        this.pacienteMonitorado = nome; //Salva o nome do paciente
+        //Busca na lista, o paciente a ser monitorado
         Paciente paciente = controlador.buscarPaciente(nome);
+        //Exibe na tela os dados do paciente
         nomePaciente.setText(paciente.getNome());
         cpfPaciente.setText(paciente.getCpf());
         gravPaciente.setText(" " +paciente.getGravidade());
@@ -41,43 +48,11 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
         respPaciente.setText(" " +paciente.getFreqRespiratoria()+" mpm");
         saturPaciente.setText(" "+paciente.getSatOxigenio()+"%");
         tempPaciente.setText(" "+paciente.getTemperatura() + "ºC");
+        //Cria a thread e inicializa
         Thread t =new Thread(this);
         t.start();
     }
     
-  /*public void atualizarDados() throws IOException, JSONException{
-        Comunicador comunicador= Comunicador.getInstancia();
-        int delay = 5000;   // delay de 5 seg.
-        int interval = 5000;  // intervalo de 1 seg.
-        Timer timer = new Timer();
-   
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                String retorno;
-                try {
-                    retorno = comunicador.getDados("GET/atualizarSinais");
-                    if(!retorno.equals("nula")){
-                        Paciente paciente = controlador.buscarPaciente(pacienteMonitorado);
-                        nomePaciente.setText(paciente.getNome());
-                        cpfPaciente.setText(paciente.getCpf());
-                        gravPaciente.setText(" " +paciente.getGravidade());
-                        pressaoPaciente.setText(" " +paciente.getPressao()+" mmHg");
-                        fcPaciente.setText(" "+paciente.getFreqCardiaca()+" bpm");
-                        respPaciente.setText(" " +paciente.getFreqRespiratoria()+" mpm");
-                        saturPaciente.setText(" "+paciente.getSatOxigenio()+"%");
-                        tempPaciente.setText(" "+paciente.getTemperatura() + "ºC");
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(MonitoramentoPaciente.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (JSONException ex) {
-                    Logger.getLogger(MonitoramentoPaciente.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(MonitoramentoPaciente.class.getName()).log(Level.SEVERE, null, ex);
-                }
-           }
-       }, delay, interval);
-         
-     }*/
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -488,11 +463,17 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
     private javax.swing.JLabel temperatura;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Método para a cada intervalo de tempo, fazer a requisicao da atualizacao 
+     * dos dados do paciente. Após receber os dados, atualiza na tela e verifica 
+     * o nível de gravidade, para enviar uma requisao POST com a mensagem de alerta
+     * ao paciente.
+     */
     @Override
     public void run() {
         Comunicador comunicador= Comunicador.getInstancia();
         int delay = 10000;   // delay de 10 seg.
-        int interval =1000;  // intervalo de 5 seg.
+        int interval =1000;  // intervalo de 1 seg.
         Timer timer = new Timer();
    
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -500,26 +481,37 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
             public void run() {
                 String retorno;
                 try {
+                    //Envia a requisicao para atualizar os sinais vitais
                     retorno = comunicador.getDados("GET/atualizarSinais");
-                    if(!retorno.equals("nula")){
+                    if(!retorno.equals("nula")){ //Se forem devolvidos dados
+                        //Busca o paciente na lista, o paciente que está sendo monitorado
                         Paciente paciente = controlador.buscarPaciente(pacienteMonitorado);
-                        if(paciente!=null){
-                        gravPaciente.setText(" " +paciente.getGravidade());
-                        pressaoPaciente.setText(" " +paciente.getPressao()+" mmHg");
-                        fcPaciente.setText(" "+paciente.getFreqCardiaca()+" bpm");
-                        respPaciente.setText(" " +paciente.getFreqRespiratoria()+" mpm");
-                        saturPaciente.setText(" "+paciente.getSatOxigenio()+"%");
-                        tempPaciente.setText(" "+paciente.getTemperatura() + "ºC");
-                        System.out.println("Interface: atualizei as informacoes");
+                        if(paciente!=null){//Se encontrou o paciente na lista
+                            //Atualiza as informacoes na tela
+                            gravPaciente.setText(" " +paciente.getGravidade());
+                            pressaoPaciente.setText(" " +paciente.getPressao()+" mmHg");
+                            fcPaciente.setText(" "+paciente.getFreqCardiaca()+" bpm");
+                            respPaciente.setText(" " +paciente.getFreqRespiratoria()+" mpm");
+                            saturPaciente.setText(" "+paciente.getSatOxigenio()+"%");
+                            tempPaciente.setText(" "+paciente.getTemperatura() + "ºC");
+                            
+                            //APAGAR DEPOIS SÓ PTA CONTROLE
+                            System.out.println("Interface: atualizei as informacoes");
+                            
                             if(paciente.getGravidade()>=3 && paciente.getGravidade()<5){
+                                //Cria a string com o nome do paciente e mensagem de alerta
                                 String informacao = pacienteMonitorado+":Você está em sinal de alerta.\nProcure uma unidade de saúde e realize o teste";
+                                //Envia a requisição para o servidor
                                 comunicador.postDados("POST/notificarPaciente/"+informacao);
                             }
                             else if(paciente.getGravidade()>=5){
+                                //Cria a string com o nome do paciente e mensagem de alerta
                                 String informacao = pacienteMonitorado+":Seu estado de saúde é grave para a covid.\nProcure uma unidade de saúde urgentemente";
+                                //Envia a requisição para o servidor
                                 comunicador.postDados("POST/notificarPaciente/"+informacao);
                             }
                         }
+                        //APAGAR DEPOIS, SÓ PARA CONTROLE
                         else{
                             System.out.println("Paciente n encontrado");
                             System.out.println("Paciente:"+pacienteMonitorado);

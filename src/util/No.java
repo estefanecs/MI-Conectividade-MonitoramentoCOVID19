@@ -1,7 +1,7 @@
 /**
  * Componente Curricular: Módulo Integrado de Concorrência e Conectividade
  * Autor: Estéfane Carmo de Souza
- * Data: /09/2021
+ * Data: 13/09/2021
  *
  * Declaro que este código foi elaborado por mim de forma individual e
  * não contém nenhum trecho de código de outro colega ou de outro autor,

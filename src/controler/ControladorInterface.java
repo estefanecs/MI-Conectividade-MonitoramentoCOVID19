@@ -1,7 +1,7 @@
 /**
  * Componente Curricular: Módulo Integrado de Concorrência e Conectividade
  * Autor: Estéfane Carmo de Souza
- * Data: /09/2021
+ * Data: 13/09/2021
  *
  * Declaro que este código foi elaborado por mim de forma individual e
  * não contém nenhum trecho de código de outro colega ou de outro autor,
@@ -20,12 +20,24 @@ import model.ArmazenamentoDados;
 import model.Paciente;
 import util.FilaPaciente;
 
+/**
+ * Classe que realiza a comunicação da interface, com o comunicador, classe para
+ * manipulacao de arquivo e com a classe de paciente
+ * 
+ * Exemplo de uso:
+ * 
+ * ControladorInterface controlador = ControladorInterface.getInstancia();
+ */
 public class ControladorInterface {
     
-    private static ControladorInterface instancia;
-    private FilaPaciente pacientes;
-    private ArmazenamentoDados armazenamento;
+    private static ControladorInterface instancia; //Instancia do controlador de interface
+    private FilaPaciente pacientes; //fila de pacientes
+    private ArmazenamentoDados armazenamento; //atributo para manipulação de arquivo
 
+    /**
+     * Método construtor para a classe. Instancia a fila de paciente e o atributo
+     * para manipulacao de arquivo.
+     */
     public ControladorInterface(){
         pacientes = new FilaPaciente();
         armazenamento= new ArmazenamentoDados();
@@ -34,7 +46,6 @@ public class ControladorInterface {
      /**
      * Método que retorna a única instancia do Controlador. Caso não exista, cria a
      * mesma.
-     *
      * @return ControladorInterface- a instância do controlador
      */
     public static synchronized ControladorInterface getInstancia() {
@@ -60,46 +71,57 @@ public class ControladorInterface {
         this.pacientes = pacientes;
     }
     
+    /**
+     * Método para cadastrar pacientes na fila e escrever no arquivo o paciente
+     * cadastrado.
+     * @param nome - nome do paciente
+     * @param cpf - cpf do paciente
+     */
     public void cadastrarPaciente(String nome, String cpf){
-        System.out.println("NOME "+nome+" CPF "+cpf);
-        Paciente paciente = new Paciente(nome, cpf);
-        pacientes.add(paciente);
-        String dado= nome.concat(":"+cpf);
-        dado= dado.replace ("\n", "");
-        System.out.println("dado para adiocionar no arquivo "+dado+"ALOOO");
-        armazenamento.write("pacientes.txt",dado);
-        System.out.println("LISTA DE PACIENTE size: "+pacientes.size());
+        Paciente paciente = new Paciente(nome, cpf); //cria a instancia de paciente com os dados recebidos
+        pacientes.add(paciente);//adiciona o paciente na fila
+        String dado= nome.concat(":"+cpf);//concatena o nome do paciente com o cpf 
+        dado= dado.replace ("\n", ""); //retira o \n da string dado
+        armazenamento.write("pacientes.txt",dado); //Escreve o paciente no arquivo
     }
-    
+   
+    /**
+     * Método para remoção de paciente e que realiza uma escrita no arquivo após
+     * a remoção.
+     * @param nome - nome do paciente a ser removido
+     * @return Paciente - retorna o paciente removido
+     */
     public Paciente removerPaciente(String nome){
-        if(!pacientes.isEmpty()){
-            Paciente paciente = pacientes.remove(nome);
-                if(paciente!=null){
-                    armazenamento.write("pacientes.txt",pacientes);
-                    return paciente;
+        if(!pacientes.isEmpty()){ //Se a lista de paciente não estiver vazia
+            Paciente paciente = pacientes.remove(nome); //Remove e salva o paciente
+                if(paciente!=null){ //Se encontrou o paciente a ser removido
+                    armazenamento.write("pacientes.txt",pacientes); //Escreve no arquivo a nova lista de pacientes
+                    return paciente; //retorna o paciente removido
                 }
         }
         return null;
     }
     
+    /**
+     * Método para fazer a importação do arquivo, com o nome e cpf de cada paciente
+     * @throws IOException 
+     */
     public void importarPacientes() throws IOException{
+        //Realiza a leitura do arquivo e salva a lista de leitura retornada
         ArrayList<String> leitura= armazenamento.read("pacientes.txt");
-        System.out.println("size de leitura "+leitura.size());
         String[] dados;
         int count=0;
-        while(!leitura.isEmpty() && count<leitura.size()){
-            dados = leitura.get(count).split(":");
-            System.out.println("dados "+dados[0]+"/ "+dados[1]);
-            Paciente paciente= new Paciente(dados[0],dados[1]);
-            pacientes.add(paciente);    
-            count++;
+        while(!leitura.isEmpty() && count<leitura.size()){ //Realiza a leitura até chegar o fim da lista
+            dados = leitura.get(count).split(":"); //Faz a separação da string
+            Paciente paciente= new Paciente(dados[0],dados[1]); //Cria a instancia do paciente
+            pacientes.add(paciente);//adiciona na fila de pacientes
+            count++; 
         }
-        System.out.println("PACIENTES LISTA "+pacientes.size());
     }
     
     /**
      * Método que adiciona em uma lista todos os pacientes cadastrados
-     *
+     * e retona para a interface.
      * @return ArrayList - lista com os pacientes
      */
     public ArrayList addPacientesComboBox() {
@@ -108,8 +130,8 @@ public class ControladorInterface {
     }
 
     /**
-     * Método que adiciona em uma lista os 7 pacientes mais graves
-     *
+     * Método que adiciona em uma lista os 7 pacientes mais graves e retorna para
+     * a inteface.
      * @return ArrayList - lista com os 7 pacientes mais graves
      */
     public ArrayList addPacientesGraves() {
@@ -126,15 +148,33 @@ public class ControladorInterface {
         return pacientes.buscarPaciente(nome);
     }
     
+    /**
+     * Método para atualizar os dados de um determinado paciente, na fila de 
+     * pacientes
+     * @param nome - nome do paciente
+     * @param temperatura - nova temperatura
+     * @param freqCardiaca - nova frequência cardíaca
+     * @param freqRespiratoria - nova frequência respiratória
+     * @param pressao - nova pressão
+     * @param saturacao - nova saturação do oxigênio
+     */
     public void atualizarDados(String nome,double temperatura,float freqCardiaca,float freqRespiratoria,float pressao, float saturacao){
+        //Remove o paciente e salva. Remove para que a fila possa ficar em ordem de gravidade
         Paciente paciente = pacientes.remove(nome);
+        
+        //APAGAR DEPOIS, SÓ PARA CONTROLAR
         System.out.println("LISTA DE PACIENTE TAMANHO: "+pacientes.size());
+        
+        //Faz a alteração de cada sinal final, na instância do paciente
         paciente.setTemperatura(temperatura);
         paciente.setFreqCardiaca(freqCardiaca);
         paciente.setFreqRespiratoria(freqRespiratoria);
         paciente.setPressao(pressao);
         paciente.setSatOxigenio(saturacao);
+        //Reensere o paciente na fila
         pacientes.add(paciente);
+        
+        //APAGAR DEPOIS, SÓ PARA CONTROLAR
         System.out.println("LISTA DE PACIENTE TAMANHO: "+pacientes.size());
     }
 }

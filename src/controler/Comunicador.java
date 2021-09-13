@@ -1,7 +1,7 @@
 /**
  * Componente Curricular: Módulo Integrado de Concorrência e Conectividade
  * Autor: Estéfane Carmo de Souza
- * Data: /09/2021
+ * Data: 13/09/2021
  *
  * Declaro que este código foi elaborado por mim de forma individual e
  * não contém nenhum trecho de código de outro colega ou de outro autor,
@@ -26,8 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
- * @author casa
+ * Classe que realiza a comunicação com o servidor
+ * 
+ * Exemplo de uso:
+ * 
+ * Comunicador comunicador = Comunicador.getInstancia();
  */
 public class Comunicador implements Runnable {
     private static Comunicador instancia;
@@ -40,6 +43,11 @@ public class Comunicador implements Runnable {
     public Comunicador() {
     }
     
+    /**
+     * Método que retorna a única instancia do Comunicador. Caso não exista, cria a
+     * mesma.
+     * @return Comunicador- a instância do comunicador
+     */
     public static synchronized Comunicador getInstancia(){
         if(instancia == null){
             instancia = new Comunicador();
@@ -47,115 +55,157 @@ public class Comunicador implements Runnable {
         return instancia;
     }
 
+    /**
+     * Método que retorna o socket do cliente
+     * @return Socket
+     */
     public Socket getCliente() {
         return cliente;
     }
 
+    /**
+     * Método que altera o socket do cliente
+     * @param cliente - novo socket
+     */
     public void setCliente(Socket cliente) {
         this.cliente = cliente;
     }
-
+    
+    /**
+     * Método que retorna o Ip da comunicação
+     * @return String - o ip
+     */
     public String getIp() {
         return ip;
     }
-
+    
+    /**
+     * Método que altera o ip da comunicação
+     * @param ip - novo ip
+     */
     public void setIp(String ip) {
         this.ip = ip;
     }
-
+    
+    /**
+     * Método que retorna a porta da comunicação
+     * @return porta - a porta
+     */
     public int getPorta() {
         return porta;
     }
 
+    /**
+     * Método que altera a porta da comunicação
+     * @param porta - nova porta
+     */
     public void setPorta(int porta) {
         this.porta = porta;
     }
     
+    /**
+     * Método para realizar a conexão entre o comunicador e o servidor
+     * @throws IOException 
+     */
     public void estabelecerConexao(/*int porta, String ip*/) throws IOException{
         /*this.porta= porta;
         this.ip=ip;*/
-        cliente= new Socket(this.ip,this.porta);
+        cliente= new Socket(this.ip,this.porta); //cria o socket do cliente
+        //Cria o buffer de escrita e leitura para conversar com o servidor
         escritor= new ObjectOutputStream((cliente.getOutputStream()));
         leitor= new ObjectInputStream((cliente.getInputStream()));
         System.out.println("\n\n****************C- aconteceu a conexão******************");
-        Thread t = new Thread(this);
+        Thread t = new Thread(this); //cria a thread
     }
      public void encerrarConexao() throws IOException{
         cliente.close();
     }
     
-     public void postDados(String dados){
+    /**
+     * Método para enviar dados para o servidor
+     * @param dados 
+     */
+    public void postDados(String dados){
         try {
             this.estabelecerConexao(/*porta, ip*/);//estabelece a conexão com o servidor
             //Envia os dados para o servidor
             escritor.writeUTF(dados);
             escritor.flush();
+            System.out.println("Os dados foram enviados");
             this.encerrarConexao();//fecha conexao
-            escritor.close();
+            escritor.close(); //fecha o buffer de escrita
             System.out.println("Fechou a conexão");
         } catch (IOException ex) {
             Logger.getLogger(Comunicador.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Os dados foram enviados");
     }
-          
-     public void analisaDados(String dados) throws JSONException{
-        System.out.println("C- irei analisar os dados");
-      
+    
+    /**
+     * Método que analisa o tipo de dados recebido, com base no método da requisição
+     * e executa uma determinada ação.
+     * @param dados - string com os dados recebidos
+     * @throws JSONException 
+     */
+    public void analisaDados(String dados) throws JSONException{
+        //Transforma a string recebida para JSON
         JSONObject dadoRecebido= new JSONObject(dados);
-        String metodo= dadoRecebido.getString("Metodo");
-        String dado= dadoRecebido.getString("Dado");
+        String metodo= dadoRecebido.getString("Metodo"); //obtém o método
+        String dado= dadoRecebido.getString("Dado"); //obtém o dado enviado
+        
+        //APAGAR DEPOIS, APENAS PARA CONTROLE
         System.out.println("metodo " +metodo+" e dado "+ dado);
         
+        //Se o método da requisição foi cadastrar pacientes
         if(metodo.contains("POST/cadastrarPaciente")){
-            System.out.println("C- entrei em cadastrarPaciente");
-            String[] informacao= dado.split(":");
-            ControladorInterface controlador= ControladorInterface.getInstancia();
-            controlador.cadastrarPaciente(informacao[0],informacao[1]);
-            System.out.println("paciente add: "+controlador.getPacientes().get(0).getNome());
+            String[] informacao= dado.split(":"); //Separa a string de dados
+            ControladorInterface controlador= ControladorInterface.getInstancia(); //obtém a instância do controlador
+            controlador.cadastrarPaciente(informacao[0],informacao[1]);//cadastra o paciente, com o nome e cpf enviado
         }
+        //Se o método da requisição foi remover paciente
         else if(metodo.contains("DELETE/removerPaciente")){
-            System.out.println("C- entrei no delete");
-            ControladorInterface controlador= ControladorInterface.getInstancia();
-            Paciente p= controlador.removerPaciente(dado);
-            if(p!=null){
-                System.out.println("paciente removido: "+p.getNome());
-               
-            }
-            
+            ControladorInterface controlador= ControladorInterface.getInstancia(); //obtém a instancia do controlador
+            controlador.removerPaciente(dado); //remove o paciente, com o nome enviado
         }
+        //Se o método da requisição foi atualizar sinais
         else if(dadoRecebido.getString("Metodo").contains("PUT/atualizarSinais")){
-             String[] informacao= dado.split(":");
-             String nome = informacao[0];
-             double temperatura = Double.parseDouble(informacao[1]);
-             float freqCardiaca = Float.parseFloat(informacao[2]);
-             float freqRespiratoria = Float.parseFloat(informacao[3]);
-             float pressao = Float.parseFloat(informacao[4]);
-             float saturacao = Float.parseFloat(informacao[5]);
-             ControladorInterface controlador= ControladorInterface.getInstancia();
+             String[] informacao= dado.split(":"); //separa a string de dados
+             String nome = informacao[0]; //nome do paciente
+             double temperatura = Double.parseDouble(informacao[1]); //temperatura do paciente
+             float freqCardiaca = Float.parseFloat(informacao[2]); //frequencia cardiaca do paciente
+             float freqRespiratoria = Float.parseFloat(informacao[3]); //frequencia respiratoria do paciente
+             float pressao = Float.parseFloat(informacao[4]); //pressao do paciente
+             float saturacao = Float.parseFloat(informacao[5]); //saturação do oxigênio do paciente
+             ControladorInterface controlador= ControladorInterface.getInstancia();//obtém a instância do controlador
+             //Envia os dados de cada sinal vital do paciente recebido, para ser atualizado pelo controlador
              controlador.atualizarDados(nome,temperatura,freqCardiaca,freqRespiratoria,pressao,saturacao);
                      
-         }
-     
-             
+         }     
      }
      
+    /**
+     * Método para o recebimento e dados do servidor. Faz uma solicitação ao servidor
+     * e este devolve o dado que foi pedido.
+     * @param requisicao - requisição a ser enviada para o servidor
+     * @return dado - o dado recebido
+     * @throws IOException
+     * @throws JSONException
+     * @throws ClassNotFoundException 
+     */
     public String getDados(String requisicao) throws IOException, JSONException, ClassNotFoundException{
-        this.estabelecerConexao(/*porta, ip*/); //estabelece a conexão com o servidor
-        //Envia a requisão do dado que deseja receber
-        
+        this.estabelecerConexao(/*porta, ip*/); //estabelece a conexão com o servidor   
         System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
+        //Envia a requisão do dado que deseja receber
         escritor.writeUTF(requisicao);
         escritor.flush();
         System.out.println("C- Enviou dados");
         //Recebe o dado enviado pelo servidor.
         String dados = null;
-        while(dados==null){
+        while(dados==null){ //Aguarda até que uma resposta pelo servidor seja enviada
             dados=leitor.readUTF();
         }        
-        System.out.println("c- recebi os dados: "+dados);
-        if(!dados.equals("nula")){
-          this.analisaDados(dados); 
+        System.out.println("C- recebi os dados: "+dados);
+        if(!dados.equals("nula")){ //Se recebeu dados válidos do servidor
+          this.analisaDados(dados); //Analisa o tipo de dados recebidos
         }   
         //Fecha o buffer de escrita e leitura
         escritor.close();
@@ -163,6 +213,7 @@ public class Comunicador implements Runnable {
         //encerra a conexão com o servidor
         this.encerrarConexao();
         System.out.println("C- Fechou a conexão"); 
+        //Retorna o dado recebido
         return dados;
      }
      
@@ -173,10 +224,10 @@ public class Comunicador implements Runnable {
             try {
                 dadosRecebidos = leitor.readUTF(); //recebe o que foi enviado
                 if(dadosRecebidos != null){//se a string não for nula
-                    System.out.println("C- Recebido do servidor: "+ dadosRecebidos);
+                    System.out.println("C- Recebido do servidor: "+ dadosRecebidos); //imprime o que recebeu
                     this.analisaDados(dadosRecebidos);//analisa o tipo de dado recebido
                 }
-                dadosRecebidos = null;
+                dadosRecebidos = null; 
             } catch (IOException ex) {
                 Logger.getLogger(Comunicador.class.getName()).log(Level.SEVERE, null, ex);
             } catch (JSONException ex) {

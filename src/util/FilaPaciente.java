@@ -1,7 +1,7 @@
 /**
  * Componente Curricular: Módulo Integrado de Concorrência e Conectividade
  * Autor: Estéfane Carmo de Souza
- * Data: /09/2021
+ * Data: 13/09/2021
  *
  * Declaro que este código foi elaborado por mim de forma individual e
  * não contém nenhum trecho de código de outro colega ou de outro autor,
@@ -161,13 +161,14 @@ public class FilaPaciente {
                 return auxiliar.getConteudo();
             } 
             else{
+                //Enquanto não for o fim da lista e o paciente não ser o procurado
                 while(auxiliar2.getNext()!=null && !auxiliar2.getConteudo().getNome().equals(nome)){
                     auxiliar = auxiliar2;
                     auxiliar2 =  auxiliar2.getNext();
                 }
-                if(auxiliar2.getConteudo().getNome().equals(nome)){
-                    auxiliar.setNext(auxiliar2.getNext());
-                    return auxiliar2.getConteudo();
+                if(auxiliar2.getConteudo().getNome().equals(nome)){//Se encontrou o paciente
+                    auxiliar.setNext(auxiliar2.getNext()); //remove
+                    return auxiliar2.getConteudo();//retorna o paciente removido
                 }
             }
         }
@@ -180,13 +181,12 @@ public class FilaPaciente {
      * @return Paciente - o paciente encontrado
      */
     public Paciente buscarPaciente(String nome){
-        if(!this.isEmpty()){
+        if(!this.isEmpty()){ //Se a lista não for vazia
             No auxiliar = first;
             No auxiliar2 = first;
-            while(auxiliar2.getNext()!=null){
-                if(auxiliar2.getConteudo().getNome().equals(nome)){
-                    System.out.println("Auxiliar "+auxiliar2.getConteudo().getNome()+"nome "+nome);
-                    return auxiliar2.getConteudo();
+            while(auxiliar2.getNext()!=null){ //Enquanto não for o fim da lista
+                if(auxiliar2.getConteudo().getNome().equals(nome)){ //Se for o paciente procurado
+                    return auxiliar2.getConteudo();//retorna o paciente
                 }
                 auxiliar = auxiliar2;
                 auxiliar2 =  auxiliar2.getNext();
@@ -196,7 +196,7 @@ public class FilaPaciente {
     }
     
      /**
-     * Método que lista todos os pacientes cadastrados
+     * Método que lista todos os pacientes cadastrados e salva em uma Arraylist
      *
      * @return ArrayList- lista contendo os pacientes
      */
@@ -221,7 +221,7 @@ public class FilaPaciente {
         ArrayList<String> lista = new ArrayList<>();
         int count =0;
         while (count < 7 && auxiliar!=null) {
-            if(auxiliar.getConteudo().getGravidade()>=3){
+            if(auxiliar.getConteudo().getGravidade()>=3){ //Só adiciona se a gravidade for maior ou igual a 3
                 String gravidade = " |Gravidade: "+ auxiliar.getConteudo().getGravidade();
                 String dado = auxiliar.getConteudo().getNome().concat(gravidade);
                 lista.add(dado);

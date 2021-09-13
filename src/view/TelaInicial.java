@@ -1,11 +1,18 @@
-package view;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Componente Curricular: Módulo Integrado de Concorrência e Conectividade
+ * Autor: Estéfane Carmo de Souza
+ * Data: 13/09/2021
+ *
+ * Declaro que este código foi elaborado por mim de forma individual e
+ * não contém nenhum trecho de código de outro colega ou de outro autor,
+ * tais como provindos de livros e apostilas, e páginas ou documentos
+ * eletrônicos da Internet. Qualquer trecho de código de outra autoria que
+ * uma citação para o  não a minha está destacado com  autor e a fonte do
+ * código, e estou ciente que estes trechos não serão considerados para fins
+ * de avaliação. Alguns trechos do código podem coincidir com de outros
+ * colegas pois estes foram discutidos em sessões tutorias.
  */
-
+package view;
 
 import controler.Comunicador;
 import controler.ControladorInterface;
@@ -15,14 +22,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import model.Paciente;
 import org.json.JSONException;
 
-/**
- *
- * @author casa
- */
 public class TelaInicial extends javax.swing.JFrame implements Runnable{
 
     private ControladorInterface controlador;
@@ -34,65 +35,33 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
     public TelaInicial() throws IOException {
         initComponents();
         this.setLocationRelativeTo(null);
+        //Obtem a unica instância do controlador da interface e do comunidador
         controlador = ControladorInterface.getInstancia();
         comunicador = Comunicador.getInstancia();
+        //Cria a thread e inicializa
         Thread t = new Thread(this);
         t.start();
-        /*CRIAR PACIENTES */
-        Paciente p1= new Paciente("Marta","098.000.999-11");
-        
-        Paciente p2= new Paciente("Joana","091.000.999-11");
-        
-        Paciente p3= new Paciente("Joao","098.000.999-11");
-        
-        Paciente p4= new Paciente("Carlos","098.000.999-11");
-        
-        p1.setFreqCardiaca(112);
-        p1.setFreqRespiratoria(22);
-        p1.setPressao(79);
-        p1.setSatOxigenio(77);
-        p1.setTemperatura(38.6);
-      
-  
-        p2.setFreqCardiaca(110);
-        p2.setFreqRespiratoria(20);
-        p2.setPressao(81);
-        p2.setSatOxigenio(88);
-        p2.setTemperatura(38.5);
-        
-         p3.setFreqCardiaca(112);
-        p3.setFreqRespiratoria(22);
-        p3.setPressao(79);
-        p3.setSatOxigenio(77);
-        p3.setTemperatura(36);
- 
-        p4.setFreqCardiaca(110);
-        p4.setFreqRespiratoria(20);
-        p4.setPressao(81);
-        p4.setSatOxigenio(88);
-        p4.setTemperatura(38.6);
-         //adicionar pacientes na lista
-         controlador.getPacientes().add(p1);
-         controlador.getPacientes().add(p2);
-         controlador.getPacientes().add(p3);
-         controlador.getPacientes().add(p4);
        
-         
+        //Importa pacientes no arquivo, caso exista
         controlador.importarPacientes();
         
         //Adiciona todos os paciente cadastrados no comboBoxPacientes
-       ArrayList<String> pacientes = controlador.addPacientesComboBox();
+        ArrayList<String> pacientes = controlador.addPacientesComboBox();
         for (int i = 0; i <pacientes.size(); i++) {
             listaPacientes.addItem(pacientes.get(i));
         }
         
-        //Atuaiza a lista de pacientes graves
+        //Atualiza a lista de pacientes graves
         this.atualizarPacientesGraves();
         
         
     }
+    
+    //Método que atualiza os 7 pacientes graves na tela
     public void atualizarPacientesGraves(){
+       //Salva a lista de pacientes graves
        ArrayList<String> pacientesGraves = controlador.addPacientesGraves();
+       //Limpa os labels
        paciente1.setText(null);
        paciente2.setText(null);
        paciente3.setText(null);
@@ -100,6 +69,7 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
        paciente5.setText(null);
        paciente6.setText(null);
        paciente7.setText(null);
+       //Se existir pacienest graves, altera cada label para o nome do paciente
        if(!pacientesGraves.isEmpty()){
           paciente1.setText(pacientesGraves.get(0));
           if(pacientesGraves.size()>=2){
@@ -121,7 +91,7 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
             paciente7.setText(pacientesGraves.get(6));
           }
        }
-        else{
+        else{//Se a lista for nula, exibe que não existem pacientes em estado grave
             paciente3.setText("Não há pacientes em estado grave");
         }
     }
@@ -346,17 +316,19 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //Botao para remocao de paciente
     private void removerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerActionPerformed
         try {
-            String retorno = comunicador.getDados("GET/removerPaciente");
+            String retorno = comunicador.getDados("GET/removerPaciente");//Faz a requisao para obter os pacientes removidos
             if(!retorno.equals("nula")){
-                //Atualiza o combo Box para as novas opções de pacientes
+                //Atualiza o comboBox com a lista de pacientes, para as novas opções de pacientes
                 listaPacientes.removeAllItems();
                 ArrayList<String> pacientes = controlador.addPacientesComboBox();
                 for (int i = 0; i <pacientes.size(); i++) {
                     listaPacientes.addItem(pacientes.get(i));
                 }
+                //Atualiza os pacientes em estado grave
                 this.atualizarPacientesGraves();
               //  JOptionPane.showMessageDialog(null, "O paciente foi removido");
                 
@@ -370,7 +342,8 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
             Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_removerActionPerformed
-
+    
+    //Botão para cadastramento de pacientes
     private void cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarActionPerformed
         try {
             String retorno=comunicador.getDados("GET/cadastrarPaciente");
@@ -391,7 +364,8 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
         }
 
     }//GEN-LAST:event_cadastrarActionPerformed
-
+    
+    //botão para acessar a tela de monitoramento de um determinado paciente
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String nome = String.valueOf(listaPacientes.getSelectedItem());
@@ -464,17 +438,18 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
     private javax.swing.JButton remover;
     // End of variables declaration//GEN-END:variables
 
+    //Método para atualizacao da lista de pacientes graves a cada 10 segundos
     @Override
     public void run() {
         int delay = 7000;   // delay de 7 seg.
-        int interval =3000;  // intervalo de 3 seg.
+        int intervalo =3000;  // intervalo de 3 seg.
         Timer timer = new Timer();
    
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-               atualizarPacientesGraves();
+               atualizarPacientesGraves(); //atualiza a lista de pacientes graves
            }
-       }, delay, interval);
+       }, delay, intervalo);
     }
 }
