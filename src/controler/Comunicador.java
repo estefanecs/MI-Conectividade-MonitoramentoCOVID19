@@ -107,9 +107,8 @@ public class Comunicador implements Runnable {
      * Método para realizar a conexão entre o comunicador e o servidor
      * @throws IOException 
      */
-    public void estabelecerConexao(/*int porta, String ip*/) throws IOException{
-        /*this.porta= porta;
-        this.ip=ip;*/
+    
+    public void estabelecerConexao() throws IOException{
         cliente= new Socket(this.ip,this.porta); //cria o socket do cliente
         //Cria o buffer de escrita e leitura para conversar com o servidor
         escritor= new ObjectOutputStream((cliente.getOutputStream()));
@@ -151,9 +150,6 @@ public class Comunicador implements Runnable {
         JSONObject dadoRecebido= new JSONObject(dados);
         String metodo= dadoRecebido.getString("Metodo"); //obtém o método
         String dado= dadoRecebido.getString("Dado"); //obtém o dado enviado
-        
-        //APAGAR DEPOIS, APENAS PARA CONTROLE
-        System.out.println("metodo " +metodo+" e dado "+ dado);
         
         //Se o método da requisição foi cadastrar pacientes
         if(metodo.contains("POST/cadastrarPaciente")){

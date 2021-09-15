@@ -38,19 +38,22 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
         controlador = ControladorInterface.getInstancia(); //Obtem a instancia do controlador
         this.pacienteMonitorado = nome; //Salva o nome do paciente
         //Busca na lista, o paciente a ser monitorado
-        Paciente paciente = controlador.buscarPaciente(nome);
-        //Exibe na tela os dados do paciente
-        nomePaciente.setText(paciente.getNome());
-        cpfPaciente.setText(paciente.getCpf());
-        gravPaciente.setText(" " +paciente.getGravidade());
-        pressaoPaciente.setText(" " +paciente.getPressao()+" mmHg");
-        fcPaciente.setText(" "+paciente.getFreqCardiaca()+" bpm");
-        respPaciente.setText(" " +paciente.getFreqRespiratoria()+" mpm");
-        saturPaciente.setText(" "+paciente.getSatOxigenio()+"%");
-        tempPaciente.setText(" "+paciente.getTemperatura() + "ºC");
-        //Cria a thread e inicializa
-        Thread t =new Thread(this);
-        t.start();
+        Paciente paciente = controlador.buscarPaciente(pacienteMonitorado);
+        if(paciente!=null){
+            //Exibe na tela os dados do paciente
+            nomePaciente.setText(paciente.getNome());
+            cpfPaciente.setText(paciente.getCpf());
+            gravPaciente.setText(" " +paciente.getGravidade());
+            pressaoPaciente.setText(" " +paciente.getPressao()+" mmHg");
+            fcPaciente.setText(" "+paciente.getFreqCardiaca()+" bpm");
+            respPaciente.setText(" " +paciente.getFreqRespiratoria()+" mpm");
+            saturPaciente.setText(" "+paciente.getSatOxigenio()+"%");
+            tempPaciente.setText(" "+paciente.getTemperatura() + "ºC");
+            //Cria a thread e inicializa
+            Thread t =new Thread(this);
+            t.start();
+        }
+       
     }
     
     /**
@@ -472,7 +475,7 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
     @Override
     public void run() {
         Comunicador comunicador= Comunicador.getInstancia();
-        int delay = 10000;   // delay de 10 seg.
+        int delay = 7000;   // delay de 7 seg.
         int interval =1000;  // intervalo de 1 seg.
         Timer timer = new Timer();
    

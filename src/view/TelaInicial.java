@@ -22,6 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.json.JSONException;
 
 public class TelaInicial extends javax.swing.JFrame implements Runnable{
@@ -151,7 +152,7 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
         jLabel2.setText("PACIENTES MAIS GRAVES");
 
         jButton1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jButton1.setText("Pesquisar");
+        jButton1.setText("Monitorar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -328,9 +329,9 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
                 for (int i = 0; i <pacientes.size(); i++) {
                     listaPacientes.addItem(pacientes.get(i));
                 }
+                JOptionPane.showMessageDialog(null, "O paciente foi removido");
                 //Atualiza os pacientes em estado grave
                 this.atualizarPacientesGraves();
-              //  JOptionPane.showMessageDialog(null, "O paciente foi removido");
                 
             }
 
@@ -354,6 +355,7 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
                 for (int i = 0; i <pacientes.size(); i++) {
                     listaPacientes.addItem(pacientes.get(i));
                 }
+                JOptionPane.showMessageDialog(null, "O paciente foi cadastrado");
             }
         } catch (IOException ex) {
             Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);

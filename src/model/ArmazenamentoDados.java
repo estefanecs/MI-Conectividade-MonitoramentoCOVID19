@@ -94,13 +94,17 @@ public class ArmazenamentoDados {
             //int count=0;
             if(!pacientes.isEmpty()){ //Se a fila de pacientes não estiver vazia
                 Paciente paciente = pacientes.get(0); //Salva o primeiro paciente
-                escrever.append(paciente.getNome()+":"+paciente.getCpf());//Escreve o nome e o cpf do paciente
+                String dado =paciente.getNome()+":"+paciente.getCpf(); //Concatena o nome e o cpf do paciente
+                dado= dado.replace ("\n", ""); //remove \n se existir
+                escrever.append(dado);//Escreve no arquivo
             }
             int count=1; //Variável para controle do loop
             while(count<pacientes.size()){ //Até chegar ao fim da fila
                 escrever.newLine();//Vai para a proxima linha do arquivo
                 Paciente paciente = pacientes.get(count); //Salva o paciente
-                escrever.append(paciente.getNome()+":"+paciente.getCpf());//Escreve o nome e o cpf do paciente
+                String dado =paciente.getNome()+":"+paciente.getCpf(); //Concatena o nome e o cpf do paciente
+                dado= dado.replace ("\n", ""); //remove \n se existir
+                escrever.append(dado);//Escreve no arquivo
                 count++;//Incrementa a variável
             }
             escrever.close();//Fecha o buffer de escrita
