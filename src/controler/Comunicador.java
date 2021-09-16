@@ -33,13 +33,17 @@ import org.json.JSONObject;
  * Comunicador comunicador = Comunicador.getInstancia();
  */
 public class Comunicador implements Runnable {
-    private static Comunicador instancia;
-    private ObjectInputStream leitor;
-    private ObjectOutputStream escritor;
-    private Socket cliente;
-    private String ip="localhost";
-    private int porta=5023;
+    private static Comunicador instancia; //Instancia da classe
+    private ObjectInputStream leitor; //Buffer de leitura
+    private ObjectOutputStream escritor; //Buffer de escrita
+    private Socket cliente; //socket para a comunicação
+    private String ip="localhost"; //É necessário alterar esse campo para o ip do servidor
+    private int porta=5023; //É necessário alterar esse campo para a porta em que o servidor está
     
+    
+    /**
+     * Método construtor da classe
+     */
     public Comunicador() {
     }
     
@@ -126,7 +130,7 @@ public class Comunicador implements Runnable {
      */
     public void postDados(String dados){
         try {
-            this.estabelecerConexao(/*porta, ip*/);//estabelece a conexão com o servidor
+            this.estabelecerConexao();//estabelece a conexão com o servidor
             //Envia os dados para o servidor
             escritor.writeUTF(dados);
             escritor.flush();
