@@ -113,12 +113,6 @@ public class ControladorInterface {
         int count=0;
         while(!leitura.isEmpty() && count<leitura.size()){ //Realiza a leitura até chegar o fim da lista
             dados = leitura.get(count).split(":"); //Faz a separação da string
-            
-            /*
-            só pra controle apagar dps
-            */
-            System.out.println("lido "+leitura.get(count));
-            
             Paciente paciente= new Paciente(dados[0],dados[1]); //Cria a instancia do paciente
             pacientes.add(paciente);//adiciona na fila de pacientes
             count++; 
@@ -165,15 +159,9 @@ public class ControladorInterface {
      * @param saturacao - nova saturação do oxigênio
      */
     public void atualizarDados(String nome,double temperatura,float freqCardiaca,float freqRespiratoria,float pressao, float saturacao){
-        //APAGAR DEPOIS, SÓ PARA CONTROLAR
-        System.out.println("LISTA DE PACIENTE TAMANHO/ ANTES REMOCAO: "+pacientes.size());
-        
         //Remove o paciente e salva. Remove para que a fila possa ficar em ordem de gravidade
         Paciente paciente = pacientes.remove(nome);
-        
-        //APAGAR DEPOIS, SÓ PARA CONTROLAR
-        System.out.println("LISTA DE PACIENTE TAMANHO: "+pacientes.size());
-        
+
         //Faz a alteração de cada sinal final, na instância do paciente se for encontrado
         if(paciente!=null){
             paciente.setTemperatura(temperatura);
@@ -184,8 +172,5 @@ public class ControladorInterface {
             //Reensere o paciente na fila
             pacientes.add(paciente);
         }
-        
-        //APAGAR DEPOIS, SÓ PARA CONTROLAR
-        System.out.println("LISTA DE PACIENTE TAMANHO: "+pacientes.size());
     }
 }

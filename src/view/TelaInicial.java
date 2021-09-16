@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -443,8 +444,8 @@ public class TelaInicial extends javax.swing.JFrame implements Runnable{
     //Método para atualizacao da lista de pacientes graves a cada 10 segundos
     @Override
     public void run() {
-        int delay = 7000;   // delay de 7 seg.
-        int intervalo =3000;  // intervalo de 3 seg.
+        int delay = 5000;   // delay de 7 seg.
+        int intervalo =1000;  // intervalo de 3 seg.
         Timer timer = new Timer();
    
         timer.scheduleAtFixedRate(new TimerTask() {

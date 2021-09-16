@@ -19,6 +19,7 @@ import controler.ControladorInterface;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Paciente;
@@ -26,8 +27,9 @@ import org.json.JSONException;
 
 public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnable{
     
-    private ControladorInterface controlador;
-    private String pacienteMonitorado;
+    private ControladorInterface controlador; //controlador da interfaces
+    private String pacienteMonitorado; //nome do paciente
+    private Semaphore semaforo; //Semaforo
     
     /**
      * Creates new form MonitoramentoPaciente1
@@ -475,7 +477,7 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
     @Override
     public void run() {
         Comunicador comunicador= Comunicador.getInstancia();
-        int delay = 7000;   // delay de 7 seg.
+        int delay = 3000;   // delay de 7 seg.
         int interval =1000;  // intervalo de 1 seg.
         Timer timer = new Timer();
    
@@ -497,9 +499,7 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
                             respPaciente.setText(" " +paciente.getFreqRespiratoria()+" mpm");
                             saturPaciente.setText(" "+paciente.getSatOxigenio()+"%");
                             tempPaciente.setText(" "+paciente.getTemperatura() + "ºC");
-                            
-                            //APAGAR DEPOIS SÓ PTA CONTROLE
-                            System.out.println("Interface: atualizei as informacoes");
+                            System.out.println("Interface: Informações atualizadas");
                             
                             if(paciente.getGravidade()>=3 && paciente.getGravidade()<5){
                                 //Cria a string com o nome do paciente e mensagem de alerta
@@ -514,10 +514,8 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
                                 comunicador.postDados("POST/notificarPaciente/"+informacao);
                             }
                         }
-                        //APAGAR DEPOIS, SÓ PARA CONTROLE
                         else{
                             System.out.println("Paciente n encontrado");
-                            System.out.println("Paciente:"+pacienteMonitorado);
                         }
                     }
                 } catch (IOException ex) {

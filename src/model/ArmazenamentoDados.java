@@ -91,7 +91,6 @@ public class ArmazenamentoDados {
         try{
             //Cria o buffer de escrita
             escrever= new BufferedWriter (new FileWriter("Dados/"+nomeArquivo,false));
-            //int count=0;
             if(!pacientes.isEmpty()){ //Se a fila de pacientes não estiver vazia
                 Paciente paciente = pacientes.get(0); //Salva o primeiro paciente
                 String dado =paciente.getNome()+":"+paciente.getCpf(); //Concatena o nome e o cpf do paciente
