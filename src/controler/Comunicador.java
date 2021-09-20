@@ -37,14 +37,14 @@ public class Comunicador implements Runnable {
     private ObjectInputStream leitor; //Buffer de leitura
     private ObjectOutputStream escritor; //Buffer de escrita
     private Socket cliente; //socket para a comunicação
-    private String ip="localhost"; //É necessário alterar esse campo para o ip do servidor
-    private int porta=5023; //É necessário alterar esse campo para a porta em que o servidor está
+    private String ip;//ip em que o servidor está
+    private int porta;//a porta em que o servidor está
     
     
     /**
      * Método construtor da classe
      */
-    public Comunicador() {
+    private Comunicador() {
     }
     
     /**

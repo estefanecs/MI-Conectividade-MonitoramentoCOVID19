@@ -38,7 +38,7 @@ public class ControladorInterface {
      * Método construtor para a classe. Instancia a fila de paciente e o atributo
      * para manipulacao de arquivo.
      */
-    public ControladorInterface(){
+    private ControladorInterface(){
         pacientes = new FilaPaciente();
         armazenamento= new ArmazenamentoDados();
     }

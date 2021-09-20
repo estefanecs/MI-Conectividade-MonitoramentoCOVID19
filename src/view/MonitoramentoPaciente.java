@@ -30,6 +30,7 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
     private ControladorInterface controlador; //controlador da interfaces
     private String pacienteMonitorado; //nome do paciente
     private Semaphore semaforo; //Semaforo
+    private Comunicador comunicador; //comunicador
     
     /**
      * Creates new form MonitoramentoPaciente1
@@ -38,6 +39,7 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
         initComponents();
         this.setLocationRelativeTo(null);
         controlador = ControladorInterface.getInstancia(); //Obtem a instancia do controlador
+        comunicador = Comunicador.getInstancia();
         this.pacienteMonitorado = nome; //Salva o nome do paciente
         //Busca na lista, o paciente a ser monitorado
         Paciente paciente = controlador.buscarPaciente(pacienteMonitorado);
@@ -476,7 +478,6 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
      */
     @Override
     public void run() {
-        Comunicador comunicador = Comunicador.getInstancia();
         int delay = 3000;   // delay de 3 seg.
         int interval = 1000;  // intervalo de 1 seg.
         Timer timer = new Timer();
