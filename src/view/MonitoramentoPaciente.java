@@ -33,7 +33,8 @@ public class MonitoramentoPaciente extends javax.swing.JFrame implements Runnabl
     private Comunicador comunicador; //comunicador
     
     /**
-     * Creates new form MonitoramentoPaciente1
+     * Cria uma nova tela de MonitoramentoPaciente
+     * @param nome - nome do paciente a ser monitorado
      */
     public MonitoramentoPaciente(String nome) {
         initComponents();
